@@ -19,17 +19,20 @@
             android:layout_centerInParent="true"
             />
         <Button
+            android:text="Load Image"
             android:id="@+id/openGallery"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             />
         <Button
+            android:text="Process"
             android:id="@+id/Capture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:visibility="gone"
             />
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

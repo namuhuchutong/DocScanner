@@ -4,13 +4,22 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.example.docscanner.utils.ImageUtils;
+import com.example.docscanner.utils.NativeClass;
+import com.example.docscanner.utils.PerspectiveTransformation;
+
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import org.opencv.android.OpenCVLoader;
+import org.opencv.core.MatOfPoint2f;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     Uri selectedImage;
     Bitmap selectedBitmap;
 
+    NativeClass a;
+
+
     static{
         OpenCVLoader.initDebug();
     }
@@ -34,8 +46,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         this.imgView = (ImageView) findViewById(R.id.imgview);
+        this.imgView.setBackgroundColor(Color.parseColor("#FFFFFF"));
         this.btnCapture = (Button) findViewById(R.id.Capture);
         this.btnOpenGallery = (Button) findViewById(R.id.openGallery);
+        this.btnOpenGallery.setOnClickListener(this.btnOpenGalleryClick);
+        this.btnCapture.setOnClickListener(this.btnCaptureClick);
     }
 
     private View.OnClickListener btnOpenGalleryClick = new View.OnClickListener(){
@@ -59,6 +74,29 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v){
 
+            Intent intent = new Intent(getApplicationContext(), ImageCropActivity.class);
+            startActivity(intent);
+
         }
     };
+
+    private void loadImage() {
+        try {
+            InputStream inputStream = getContentResolver().openInputStream(this.selectedImage);
+            selectedBitmap = BitmapFactory.decodeStream(inputStream);
+            imgView.setImageBitmap(selectedBitmap);
+            btnCapture.setVisibility(View.VISIBLE);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null) {
+            selectedImage = data.getData();
+            this.loadImage();
+        }
+    }
 }
