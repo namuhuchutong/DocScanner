@@ -46,7 +46,7 @@ public class ImageCropActivity extends Activity{
         nativeClass = new NativeClass();
         btnImgEnhace = (Button) findViewById(R.id.btnImageEnhance);
         holder = (FrameLayout) findViewById(R.id.holderImageCrop);
-        imgView = (ImageView) findViewById(R.id.imgview);
+        imgView = (ImageView) findViewById(R.id.imageView);
         polygonView = (PolygonView) findViewById(R.id.polygonView);
 
         holder.post(new Runnable() {

@@ -32,7 +32,7 @@ public class ImageEnhaceActivity extends AppCompatActivity {
         ImgConstants.selectedimgBitmap = null;
         imgView.setImageBitmap(selectedBitmap);
 
-        imgView = (ImageView) findViewById(R.id.imgview);
+        imgView = (ImageView) findViewById(R.id.imageView);
         btnImgEnhace = (Button) findViewById(R.id.btnImageEnhance);
 
         btnImgEnhace.setOnClickListener(btnImgEnhaceClick);

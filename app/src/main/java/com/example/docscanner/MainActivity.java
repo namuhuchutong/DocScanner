@@ -1,7 +1,5 @@
 package com.example.docscanner;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,14 +10,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.example.docscanner.utils.ImageUtils;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.docscanner.utils.ImgConstants;
 import com.example.docscanner.utils.NativeClass;
-import com.example.docscanner.utils.PerspectiveTransformation;
+
+import org.opencv.android.OpenCVLoader;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import org.opencv.android.OpenCVLoader;
-import org.opencv.core.MatOfPoint2f;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,10 +44,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.imgView = (ImageView) findViewById(R.id.imgview);
+        this.imgView = (ImageView) findViewById(R.id.imageView);
         this.imgView.setBackgroundColor(Color.parseColor("#FFFFFF"));
-        this.btnCapture = (Button) findViewById(R.id.Capture);
-        this.btnOpenGallery = (Button) findViewById(R.id.openGallery);
+        this.btnCapture = (Button) findViewById(R.id.btnImageProcess);
+        this.btnOpenGallery = (Button) findViewById(R.id.btnOpenGallery);
         this.btnOpenGallery.setOnClickListener(this.btnOpenGalleryClick);
         this.btnCapture.setOnClickListener(this.btnCaptureClick);
     }
@@ -73,6 +72,9 @@ public class MainActivity extends AppCompatActivity {
     private View.OnClickListener btnCaptureClick = new View.OnClickListener(){
         @Override
         public void onClick(View v){
+
+            ImgConstants.selectedimgBitmap = selectedBitmap;
+
 
             Intent intent = new Intent(getApplicationContext(), ImageCropActivity.class);
             startActivity(intent);
