@@ -2,7 +2,6 @@ package com.example.docscanner.utils;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.util.AttributeSet;
@@ -94,7 +93,7 @@ public class PolygonView extends FrameLayout {
 
     private void initPaint() {
         paint = new Paint();
-        paint.setColor(Color.RED);
+        paint.setColor(getResources().getColor(R.color.purple_200));
         paint.setStrokeWidth(2);
         paint.setAntiAlias(true);
     }
@@ -236,9 +235,9 @@ public class PolygonView extends FrameLayout {
                 case MotionEvent.ACTION_UP:
                     int color = 0;
                     if (isValidShape(getPoints())) {
-                        color = Color.BLUE;
+                        color = getResources().getColor(R.color.purple_200);
                     } else {
-                        color = Color.YELLOW;
+                        color = getResources().getColor(R.color.teal_200);
                     }
                     paint.setColor(color);
                     break;
@@ -284,9 +283,9 @@ public class PolygonView extends FrameLayout {
                 case MotionEvent.ACTION_UP:
                     int color = 0;
                     if (isValidShape(getPoints())) {
-                        color = Color.BLUE;
+                        color = getResources().getColor(R.color.purple_200);
                     } else {
-                        color = Color.YELLOW;
+                        color = getResources().getColor(R.color.teal_200);
                     }
                     paint.setColor(color);
                     break;

@@ -6,13 +6,14 @@ import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.RectF;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.view.Gravity;
+import android.graphics.drawable.BitmapDrawable;
+
 
 import com.example.docscanner.utils.ImgConstants;
 import com.example.docscanner.utils.NativeClass;
@@ -43,6 +44,11 @@ public class ImageCropActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_crop);
 
+        initalizeElement();
+
+    }
+
+    private void initalizeElement() {
         nativeClass = new NativeClass();
         btnImgEnhace = (Button) findViewById(R.id.btnImageEnhance);
         holder = (FrameLayout) findViewById(R.id.holderImageCrop);
@@ -52,28 +58,31 @@ public class ImageCropActivity extends Activity{
         holder.post(new Runnable() {
             @Override
             public void run() {
-                selectedImgBitmap = ImgConstants.selectedimgBitmap;
-                ImgConstants.selectedimgBitmap = null;
-
-                Bitmap scaledBitmap = scaledBitmap(selectedImgBitmap, holder.getWidth(), holder.getHeight());
-                imgView.setImageBitmap(scaledBitmap);
-
-                Bitmap tempBitmap = ((BitmapDrawable) imgView.getDrawable()).getBitmap();
-                Map<Integer, PointF> pointFs = getEdgePoints(tempBitmap);
-
-                polygonView.setPoints(pointFs);
-                polygonView.setVisibility(View.VISIBLE);
-
-                int padding = 16;
-
-                FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(tempBitmap.getWidth() + 2 * padding,  tempBitmap.getHeight() + 2 * padding);
-                layoutParams.gravity = Gravity.CENTER;
-
-                polygonView.setLayoutParams(layoutParams);
+                initalizeCropping();
             }
         });
         btnImgEnhace.setOnClickListener(btnImgEnhaceClick);
+    }
 
+    private void initalizeCropping(){
+        selectedImgBitmap = ImgConstants.selectedimgBitmap;
+        ImgConstants.selectedimgBitmap = null;
+
+        Bitmap scaledBitmap = scaledBitmap(selectedImgBitmap, holder.getWidth(), holder.getHeight());
+        imgView.setImageBitmap(scaledBitmap);
+
+        Bitmap tempBitmap = ((BitmapDrawable) imgView.getDrawable()).getBitmap();
+        Map<Integer, PointF> pointFs = getEdgePoints(tempBitmap);
+
+        polygonView.setPoints(pointFs);
+        polygonView.setVisibility(View.VISIBLE);
+
+        int padding = 16;
+
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(tempBitmap.getWidth() + 2 * padding, tempBitmap.getHeight() + 2 * padding);
+        layoutParams.gravity = Gravity.CENTER;
+
+        polygonView.setLayoutParams(layoutParams);
     }
 
     private View.OnClickListener btnImgEnhaceClick = new View.OnClickListener()

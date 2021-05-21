@@ -3,7 +3,6 @@ package com.example.docscanner;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -44,12 +43,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initializeElement();
+        initializeEvent();
+    }
+
+    private void initializeElement() {
         this.imgView = (ImageView) findViewById(R.id.imageView);
-        this.imgView.setBackgroundColor(Color.parseColor("#FFFFFF"));
-        this.btnCapture = (Button) findViewById(R.id.btnImageProcess);
         this.btnOpenGallery = (Button) findViewById(R.id.btnOpenGallery);
-        this.btnOpenGallery.setOnClickListener(this.btnOpenGalleryClick);
+        this.btnCapture = (Button) findViewById(R.id.btnImageProcess);
+    }
+
+    private void initializeEvent() {
         this.btnCapture.setOnClickListener(this.btnCaptureClick);
+        this.btnOpenGallery.setOnClickListener(this.btnOpenGalleryClick);
     }
 
     private View.OnClickListener btnOpenGalleryClick = new View.OnClickListener(){

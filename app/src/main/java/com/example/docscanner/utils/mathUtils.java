@@ -10,19 +10,19 @@ import java.util.List;
 
 public class mathUtils {
 
-    public static MatOfPoint toMatOfPointInt(MatOfPoint2f mat){
+    public static MatOfPoint toMatOfPointInt(MatOfPoint2f mat) {
         MatOfPoint matInt = new MatOfPoint();
         mat.convertTo(matInt, CvType.CV_32S);
         return matInt;
     }
 
-    public static MatOfPoint2f toMatOfPointFloat(MatOfPoint mat){
+    public static MatOfPoint2f toMatOfPointFloat(MatOfPoint mat) {
         MatOfPoint2f matFloat = new MatOfPoint2f();
         mat.convertTo(matFloat, CvType.CV_32FC2);
         return matFloat;
     }
 
-    public static double angle(Point p1, Point p2, Point p0){
+    public static double angle(Point p1, Point p2, Point p0) {
         double dx1 = p1.x - p0.x;
         double dy1 = p1.y - p0.y;
         double dx2 = p2.x - p0.x;

@@ -1,10 +1,10 @@
 package com.example.docscanner;
 
 import android.graphics.Bitmap;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,8 +13,8 @@ import com.example.docscanner.utils.NativeClass;
 
 public class ImageEnhaceActivity extends AppCompatActivity {
 
-    ImageView imgView;
-    Bitmap selectedBitmap;
+    ImageView imageView;
+    Bitmap selectedImageBitmap;
 
     Button btnImgEnhace;
 
@@ -26,21 +26,43 @@ public class ImageEnhaceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_enhance);
 
-        nativeClass = new NativeClass();
-
-        selectedBitmap = ImgConstants.selectedimgBitmap;
-        ImgConstants.selectedimgBitmap = null;
-        imgView.setImageBitmap(selectedBitmap);
-
-        imgView = (ImageView) findViewById(R.id.imageView);
-        btnImgEnhace = (Button) findViewById(R.id.btnImageEnhance);
-
-        btnImgEnhace.setOnClickListener(btnImgEnhaceClick);
+        initializeElement();
+        initializeImage();
     }
 
-    private View.OnClickListener btnImgEnhaceClick = new View.OnClickListener(){
+    private void initializeElement() {
+
+        nativeClass = new NativeClass();
+        imageView = findViewById(R.id.imageView);
+    }
+
+    private void initializeImage() {
+
+        selectedImageBitmap = ImgConstants.selectedimgBitmap;
+        ImgConstants.selectedimgBitmap = null;
+        imageView.setImageBitmap(selectedImageBitmap);
+
+    }
+
+    private View.OnClickListener btnImageToBWClick = new View.OnClickListener() {
         @Override
-        public void onClick(View v){
+        public void onClick(View v) {
+
         }
     };
+
+    private View.OnClickListener btnImageToMagicColorClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
+
+    private View.OnClickListener btnImageToGrayClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
+
 }

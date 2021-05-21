@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ImageCropActivity" />
+        <activity android:name=".ImageEnhaceActivity"/>
     </application>
 
 </manifest>

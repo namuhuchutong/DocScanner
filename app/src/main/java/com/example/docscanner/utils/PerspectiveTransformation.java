@@ -11,11 +11,22 @@ import java.util.List;
 
 public class PerspectiveTransformation {
 
+    private static final String DEBUG_TAG = "PerspectiveTransformation";
 
-    private double getDistance(Point p1, Point p2) {
-        double dx = p2.x - p1.x;
-        double dy = p2.y - p1.y;
-        return Math.sqrt(dx * dx + dy * dy);
+    public PerspectiveTransformation() {
+    }
+
+    public Mat transform(Mat src, MatOfPoint2f corners) {
+        MatOfPoint2f sortedCorners = sortCorners(corners);
+        Size size = getRectangleSize(sortedCorners);
+
+        Mat result = Mat.zeros(size, src.type());
+        MatOfPoint2f imageOutline = getOutline(result);
+
+        Mat transformation = Imgproc.getPerspectiveTransform(sortedCorners, imageOutline);
+        Imgproc.warpPerspective(src, result, transformation, size);
+
+        return result;
     }
 
     private Size getRectangleSize(MatOfPoint2f rectangle) {
@@ -32,6 +43,12 @@ public class PerspectiveTransformation {
         return new Size(new Point(averageWidth, averageHeight));
     }
 
+    private double getDistance(Point p1, Point p2) {
+        double dx = p2.x - p1.x;
+        double dy = p2.y - p1.y;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
     private MatOfPoint2f getOutline(Mat image) {
         Point topLeft = new Point(0, 0);
         Point topRight = new Point(image.cols(), 0);
@@ -43,18 +60,6 @@ public class PerspectiveTransformation {
         result.fromArray(points);
 
         return result;
-    }
-
-    private Point getMassCenter(MatOfPoint2f points) {
-        double xSum = 0;
-        double ySum = 0;
-        List<Point> pointList = points.toList();
-        int len = pointList.size();
-        for (Point point : pointList) {
-            xSum += point.x;
-            ySum += point.y;
-        }
-        return new Point(xSum / len, ySum / len);
     }
 
     private MatOfPoint2f sortCorners(MatOfPoint2f corners) {
@@ -83,17 +88,16 @@ public class PerspectiveTransformation {
         return result;
     }
 
-    public Mat transform(Mat src, MatOfPoint2f corners) {
-        MatOfPoint2f sortedCorners = sortCorners(corners);
-        Size size = getRectangleSize(sortedCorners);
-
-        Mat result = Mat.zeros(size, src.type());
-        MatOfPoint2f imageOutline = getOutline(result);
-
-        Mat transformation = Imgproc.getPerspectiveTransform(sortedCorners, imageOutline);
-        Imgproc.warpPerspective(src, result, transformation, size);
-
-        return result;
+    private Point getMassCenter(MatOfPoint2f points) {
+        double xSum = 0;
+        double ySum = 0;
+        List<Point> pointList = points.toList();
+        int len = pointList.size();
+        for (Point point : pointList) {
+            xSum += point.x;
+            ySum += point.y;
+        }
+        return new Point(xSum / len, ySum / len);
     }
 
 }

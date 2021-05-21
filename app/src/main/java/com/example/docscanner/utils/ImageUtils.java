@@ -16,7 +16,7 @@ public class ImageUtils {
         return Bitmap.createBitmap(original, 0, 0, original.getWidth(), original.getHeight(), matrix, true);
     }
 
-    public static Mat bitmapToMat(Bitmap bitmap){
+    public static Mat bitmapToMat(Bitmap bitmap) {
         Mat mat = new Mat(bitmap.getHeight(), bitmap.getWidth(), CvType.CV_8U, new Scalar(4));
         Bitmap bitmap32 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
         Utils.bitmapToMat(bitmap32, mat);
