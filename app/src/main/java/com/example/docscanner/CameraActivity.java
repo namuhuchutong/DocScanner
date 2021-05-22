@@ -1,6 +1,7 @@
 package com.example.docscanner;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
@@ -10,6 +11,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.example.docscanner.utils.CameraSurfaceView;
+
+import java.io.ByteArrayOutputStream;
 
 public class CameraActivity extends Activity {
 
@@ -46,8 +49,19 @@ public class CameraActivity extends Activity {
                 Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
                 imgView.setImageBitmap(bitmap);
 
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
+
+                Intent intent = getIntent();
+                intent.putExtra("CapturedImage", byteArray);
+                setResult(RESULT_OK, intent);
+                finish();
+
                 camera.startPreview();
             }
         });
     }
+
+
 }

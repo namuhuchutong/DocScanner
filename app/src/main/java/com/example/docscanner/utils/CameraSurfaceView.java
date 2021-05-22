@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+
 public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
 
     SurfaceHolder holder;

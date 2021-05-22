@@ -21,7 +21,6 @@ import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity {
 
-    final static int PICK_IMAGE = 1001;
 
     Button btnOpenGallery;
     Button btnCapture;
@@ -73,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("image/*");
-            startActivityForResult(intent.createChooser(intent, "Albums"), PICK_IMAGE);
+            startActivityForResult(intent.createChooser(intent, "Albums"), ImgConstants.PICK_IMAGE);
 
         }
     };
@@ -94,8 +93,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v){
 
+
             Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, ImgConstants.GET_IMAGE);
         }
     };
 
@@ -113,9 +113,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null) {
+        if (requestCode == ImgConstants.PICK_IMAGE && resultCode == RESULT_OK && data != null) {
             selectedImage = data.getData();
             this.loadImage();
+        }
+        else if(requestCode == ImgConstants.GET_IMAGE && resultCode == RESULT_OK && data != null){
+            byte[] byteArray = data.getByteArrayExtra("CapturedImage");
+            selectedBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+            imgView.setImageBitmap(selectedBitmap);
+            btnCapture.setVisibility(View.VISIBLE);
         }
     }
 }
