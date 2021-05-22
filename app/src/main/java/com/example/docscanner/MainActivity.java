@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button btnOpenGallery;
     Button btnCapture;
+    Button btnCamera;
 
     ImageView imgView;
 
@@ -51,11 +52,13 @@ public class MainActivity extends AppCompatActivity {
         this.imgView = (ImageView) findViewById(R.id.imageView);
         this.btnOpenGallery = (Button) findViewById(R.id.btnOpenGallery);
         this.btnCapture = (Button) findViewById(R.id.btnImageProcess);
+        this.btnCamera = (Button) findViewById(R.id.btnCamera);
     }
 
     private void initializeEvent() {
         this.btnCapture.setOnClickListener(this.btnCaptureClick);
         this.btnOpenGallery.setOnClickListener(this.btnOpenGalleryClick);
+        this.btnCamera.setOnClickListener(btnCameraClick);
     }
 
     private View.OnClickListener btnOpenGalleryClick = new View.OnClickListener(){
@@ -81,10 +84,18 @@ public class MainActivity extends AppCompatActivity {
 
             ImgConstants.selectedimgBitmap = selectedBitmap;
 
-
             Intent intent = new Intent(getApplicationContext(), ImageCropActivity.class);
             startActivity(intent);
 
+        }
+    };
+
+    private View.OnClickListener btnCameraClick = new View.OnClickListener(){
+        @Override
+        public void onClick(View v){
+
+            Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
+            startActivity(intent);
         }
     };
 
