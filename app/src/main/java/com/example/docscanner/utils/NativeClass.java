@@ -33,6 +33,9 @@ public class NativeClass {
     }
 
     private static Comparator<MatOfPoint2f> AreaDescendingComparator = new Comparator<MatOfPoint2f>() {
+
+        // 계산된 ROI 크기를 비교.
+
         public int compare(MatOfPoint2f m1, MatOfPoint2f m2) {
             double area1 = Imgproc.contourArea(m1);
             double area2 = Imgproc.contourArea(m2);
@@ -45,7 +48,7 @@ public class NativeClass {
 
         Mat src = ImageUtils.bitmapToMat(bitmap);
 
-        // Downscale image for better performance.
+        // 처리 속도 향상을 위해서 이미지 크기를 줄임.
         double ratio = DOWNSCALE_IMAGE_SIZE / Math.max(src.width(), src.height());
         Size downscaledSize = new Size(src.width() * ratio, src.height() * ratio);
         Mat downscaled = new Mat(downscaledSize, src.type());
@@ -55,6 +58,9 @@ public class NativeClass {
         if (rectangles.size() == 0) {
             return null;
         }
+
+        // 가장 큰 ROI 중에서 ratio에 맞춰 다운 스케일.
+
         Collections.sort(rectangles, AreaDescendingComparator);
         MatOfPoint2f largestRectangle = rectangles.get(0);
         MatOfPoint2f result = mathUtils.scaleRectangle(largestRectangle, 1f / ratio);
@@ -64,11 +70,11 @@ public class NativeClass {
     //public native float[] getPoints(Bitmap bitmap);
     public List<MatOfPoint2f> getPoints(Mat src) {
 
-        // Blur the image to filter out the noise.
+        // 이미지 노이즈를 줄이기 위해서 블러링 처리
         Mat blurred = new Mat();
         Imgproc.medianBlur(src, blurred, 9);
 
-        // Set up images to use.
+        // 컬러 이미지는 많은 연산으로 요구함. 흑백 이미지로 변환하여 처리.
         Mat gray0 = new Mat(blurred.size(), CvType.CV_8U);
         Mat gray = new Mat();
 
@@ -91,29 +97,35 @@ public class NativeClass {
 
             Core.mixChannels(sources, destinations, fromTo);
 
-            // Try several threshold levels.
+            // 임계값에 따라 처리가 다름.
             for (int l = 0; l < THRESHOLD_LEVEL; l++) {
                 if (l == 0) {
-                    // HACK: Use Canny instead of zero threshold level.
-                    // Canny helps to catch squares with gradient shading.
-                    // NOTE: No kernel size parameters on Java API.
-                    Imgproc.Canny(gray0, gray, 10, 20);
+                    // 0일 떄 캐니 알고리즘을 통해 처리함
+                    // 자바 API에서는 커널 크기가 지정할 수 없음. (c++에서는 소벨 커널 크기 지정 파라미터 존재)
+                    Imgproc.Canny(gray0, gray, 20, 30);
 
-                    // Dilate Canny output to remove potential holes between edge segments.
-                    Imgproc.dilate(gray, gray, Mat.ones(new Size(3, 3), 0));
+                    // Canny 알고리즘으로 얻은 이미지에 노이즈를 제거함(필터 내부의 가장 밝은 값으로 변환) -> 흰색 강
+                    Imgproc.dilate(gray, gray, Mat.ones(new Size(5, 5), 0));
                 } else {
+
+                    // 임계값 이상부터 전부 이진화 처리(검정 or 흰색)
                     int threshold = (l + 1) * 255 / THRESHOLD_LEVEL;
                     Imgproc.threshold(gray0, gray, threshold, 255, Imgproc.THRESH_BINARY);
                 }
 
-                // Find contours and store them all as a list.
+                // 테두리 처리된 ROI들이 리스트에 저장됨. (이미지에 따라 영역이 다앙하게 나온다. index을 통해 접근 가능)
                 Imgproc.findContours(gray, contours, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
+                //for debugging.
+                Bitmap a = ImageUtils.matToBitmap(gray);
 
                 for (MatOfPoint contour : contours) {
                     MatOfPoint2f contourFloat = mathUtils.toMatOfPointFloat(contour);
                     double arcLen = Imgproc.arcLength(contourFloat, true) * 0.02;
 
-                    // Approximate polygonal curves.
+                    /*
+                    *   이미지 윤곽선을 얻었다면 불필요한 윤관선을 얻을 수 있다.
+                    *   얻은 윤관의 부분을 다각형으로 근사하여 단순하게 처리할 수 있음.
+                     */
                     MatOfPoint2f approx = new MatOfPoint2f();
                     Imgproc.approxPolyDP(contourFloat, approx, arcLen, true);
 
