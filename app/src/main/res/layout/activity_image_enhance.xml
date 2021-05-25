@@ -52,13 +52,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:src="@drawable/pdf_fab"
+        android:src="@drawable/jpg_fab"
         android:clickable="true"
         app:fabSize="mini"
-        app:layout_constraintTop_toTopOf="@id/fabMain"
-        app:layout_constraintBottom_toBottomOf="@id/fabMain"
-        app:layout_constraintStart_toStartOf="@id/fabMain"
-        app:layout_constraintEnd_toEndOf="@id/fabMain"/>
+        app:layout_constraintBottom_toTopOf="@id/fabPdf"
+        app:layout_constraintEnd_toEndOf="@+id/fabPdf"
+        app:layout_constraintStart_toStartOf="@+id/fabPdf"/>
 
     <TextView
         android:id="@+id/fabJpegText"
@@ -77,13 +76,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:src="@drawable/jpg_fab"
+        android:src="@drawable/pdf_fab"
         android:clickable="true"
+        android:layout_gravity="end"
         app:fabSize="mini"
-        app:layout_constraintTop_toTopOf="@id/fabMain"
-        app:layout_constraintBottom_toBottomOf="@id/fabMain"
-        app:layout_constraintStart_toStartOf="@id/fabMain"
-        app:layout_constraintEnd_toEndOf="@id/fabMain"/>
+        app:layout_constraintBottom_toTopOf="@id/fabMain"
+        app:layout_constraintEnd_toEndOf="@+id/fabMain"
+        app:layout_constraintStart_toStartOf="@+id/fabMain"/>
 
     <TextView
         android:id="@+id/fabPdfText"

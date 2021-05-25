@@ -37,6 +37,7 @@ public class ImageEnhaceActivity extends Activity {
         setContentView(R.layout.activity_image_enhance);
 
         initializeElement();
+        initalizeEvent();
         initializeImage();
     }
 
@@ -108,10 +109,10 @@ public class ImageEnhaceActivity extends Activity {
               isFabVisible = true;
           }
           else{
+              fabPDF.hide();
+              fabJpeg.hide();
               fabPDFText.setVisibility(View.GONE);
-              fabPDF.setVisibility(View.GONE);
               fabJpegText.setVisibility(View.GONE);
-              fabPDF.setVisibility(View.GONE);
 
               isFabVisible = false;
           }
