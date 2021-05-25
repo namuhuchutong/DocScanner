@@ -15,7 +15,11 @@ public class ImageUtils {
         matrix.postRotate(90);
         return Bitmap.createBitmap(original, 0, 0, original.getWidth(), original.getHeight(), matrix, true);
     }
-
+    /*
+    *       왜 자꾸 에러가 나오는가?
+    *       제대로 로딩이 안되는 문제인가?
+    *     java.lang.UnsatisfiedLinkError: No implementation found for long org.opencv.core.Mat.n_Mat(int, int, int, double, double, double, double) (tried Java_org_opencv_core_Mat_n_1Mat and Java_org_opencv_core_Mat_n_1Mat__IIIDDDD)
+     */
     public static Mat bitmapToMat(Bitmap bitmap) {
         Mat mat = new Mat(bitmap.getHeight(), bitmap.getWidth(), CvType.CV_8U, new Scalar(4));
         Bitmap bitmap32 = bitmap.copy(Bitmap.Config.ARGB_8888, true);

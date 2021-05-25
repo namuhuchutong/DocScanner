@@ -48,14 +48,63 @@
         app:layout_constraintVertical_bias="0.505" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
+        android:id="@+id/fabJpeg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:src="@drawable/pdf_fab"
+        android:clickable="true"
+        app:fabSize="mini"
+        app:layout_constraintTop_toTopOf="@id/fabMain"
+        app:layout_constraintBottom_toBottomOf="@id/fabMain"
+        app:layout_constraintStart_toStartOf="@id/fabMain"
+        app:layout_constraintEnd_toEndOf="@id/fabMain"/>
+
+    <TextView
+        android:id="@+id/fabJpegText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="Jpeg Attachment"
+        app:layout_constraintBottom_toBottomOf="@+id/fabJpeg"
+        app:layout_constraintEnd_toStartOf="@+id/fabJpeg"
+        app:layout_constraintTop_toTopOf="@+id/fabJpeg"
+        />
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabPdf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:src="@drawable/jpg_fab"
+        android:clickable="true"
+        app:fabSize="mini"
+        app:layout_constraintTop_toTopOf="@id/fabMain"
+        app:layout_constraintBottom_toBottomOf="@id/fabMain"
+        app:layout_constraintStart_toStartOf="@id/fabMain"
+        app:layout_constraintEnd_toEndOf="@id/fabMain"/>
+
+    <TextView
+        android:id="@+id/fabPdfText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="PDF Attachment"
+        app:layout_constraintBottom_toBottomOf="@+id/fabPdf"
+        app:layout_constraintEnd_toStartOf="@+id/fabPdf"
+        app:layout_constraintTop_toTopOf="@+id/fabPdf"
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabMain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
         app:srcCompat="@drawable/mail_fab"
-        tools:layout_editor_absoluteX="339dp"
-        tools:layout_editor_absoluteY="605dp"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintBottom_toTopOf="@id/btnImageToGray"
+        app:layout_constraintEnd_toEndOf="parent"
+         />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
