@@ -7,6 +7,7 @@ import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -29,6 +30,8 @@ import java.util.List;
 import java.util.Map;
 
 public class ImageCropActivity extends Activity{
+
+    private static final String IMAGE_DEBUG = "Image-Debugging";
 
     FrameLayout holder;
     ImageView imgView;
@@ -68,8 +71,8 @@ public class ImageCropActivity extends Activity{
         selectedImgBitmap = ImgConstants.selectedimgBitmap;
         ImgConstants.selectedimgBitmap = null;
 
-        Bitmap scaledBitmap = scaledBitmap(selectedImgBitmap, holder.getWidth(), holder.getHeight());
-        imgView.setImageBitmap(scaledBitmap);
+        Bitmap scaledbitmap = scaledBitmap(selectedImgBitmap, holder.getWidth(), holder.getHeight());
+        imgView.setImageBitmap(scaledbitmap);
 
         Bitmap tempBitmap = ((BitmapDrawable) imgView.getDrawable()).getBitmap();
         Map<Integer, PointF> pointFs = getEdgePoints(tempBitmap);
@@ -77,7 +80,7 @@ public class ImageCropActivity extends Activity{
         polygonView.setPoints(pointFs);
         polygonView.setVisibility(View.VISIBLE);
 
-        int padding = 16;
+        int padding = (int) getResources().getDimension(R.dimen.scanPadding);
 
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(tempBitmap.getWidth() + 2 * padding, tempBitmap.getHeight() + 2 * padding);
         layoutParams.gravity = Gravity.CENTER;
@@ -117,10 +120,19 @@ public class ImageCropActivity extends Activity{
 
 
     private Bitmap scaledBitmap(Bitmap bitmap, int width, int height){
+        Log.i(IMAGE_DEBUG, "ScaledBitmap");
+        Log.i(IMAGE_DEBUG, width + " " + height);
 
+
+        /*
+        *   FIX HERE!!
+         */
+
+        boolean a;
         Matrix m = new Matrix();
-        m.setRectToRect(new RectF(0, 0, bitmap.getHeight(), bitmap.getHeight()), new RectF(0, 0, width, height), Matrix.ScaleToFit.CENTER);
-        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), m, true);
+        a = m.setRectToRect(new RectF(0, 0, bitmap.getHeight(), bitmap.getHeight()), new RectF(0, 0, width, height), Matrix.ScaleToFit.CENTER);
+        Bitmap result = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), m, true);
+        return result;
     }
 
     private Map<Integer, PointF> getEdgePoints(Bitmap tempBitmap){

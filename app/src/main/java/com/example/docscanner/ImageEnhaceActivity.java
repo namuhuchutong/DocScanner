@@ -1,17 +1,16 @@
 package com.example.docscanner;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.docscanner.utils.ImgConstants;
 import com.example.docscanner.utils.NativeClass;
 
-public class ImageEnhaceActivity extends AppCompatActivity {
+public class ImageEnhaceActivity extends Activity {
 
     ImageView imageView;
     Bitmap selectedImageBitmap;

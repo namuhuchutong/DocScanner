@@ -3,6 +3,7 @@ package com.example.docscanner;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.docscanner.utils.CameraSurfaceView;
 import com.example.docscanner.utils.ImgConstants;
 import com.example.docscanner.utils.NativeClass;
 
@@ -32,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
     Bitmap selectedBitmap;
 
     NativeClass a;
-
+    CameraSurfaceView surfaceView;
+    Button btnCameraCapture;
 
     static{
         OpenCVLoader.initDebug();
@@ -48,16 +51,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initializeElement() {
-        this.imgView = (ImageView) findViewById(R.id.imageView);
+        this.surfaceView = findViewById(R.id.surfaceView);
+        this.imgView = (ImageView) findViewById(R.id.imgView);
         this.btnOpenGallery = (Button) findViewById(R.id.btnOpenGallery);
         this.btnCapture = (Button) findViewById(R.id.btnImageProcess);
-        this.btnCamera = (Button) findViewById(R.id.btnCamera);
+        this.btnCameraCapture = (Button) findViewById(R.id.btnCameraCapture);
+
     }
 
     private void initializeEvent() {
         this.btnCapture.setOnClickListener(this.btnCaptureClick);
         this.btnOpenGallery.setOnClickListener(this.btnOpenGalleryClick);
-        this.btnCamera.setOnClickListener(btnCameraClick);
+        this.btnCameraCapture.setOnClickListener(this.btnCameraCaptureClick);
     }
 
     private View.OnClickListener btnOpenGalleryClick = new View.OnClickListener(){
@@ -99,12 +104,36 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    private View.OnClickListener btnCameraCaptureClick = new View.OnClickListener(){
+        @Override
+        public void onClick(View v){
+            caputre();
+        }
+    };
+
+    public void caputre(){
+        surfaceView.capture(new Camera.PictureCallback(){
+           @Override
+           public void onPictureTaken(byte[] data, Camera camera){
+               BitmapFactory.Options options = new BitmapFactory.Options();
+               options.inSampleSize = 2;
+               Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+               selectedBitmap = bitmap;
+               imgView.setVisibility(View.VISIBLE);
+               surfaceView.setVisibility(View.INVISIBLE);
+               imgView.setImageBitmap(selectedBitmap);
+
+           }
+        });
+    }
+
     private void loadImage() {
         try {
             InputStream inputStream = getContentResolver().openInputStream(this.selectedImage);
             selectedBitmap = BitmapFactory.decodeStream(inputStream);
+            imgView.setVisibility(View.VISIBLE);
+            surfaceView.setVisibility(View.INVISIBLE);
             imgView.setImageBitmap(selectedBitmap);
-            btnCapture.setVisibility(View.VISIBLE);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

@@ -78,6 +78,8 @@ public class NativeClass {
         Mat gray0 = new Mat(blurred.size(), CvType.CV_8U);
         Mat gray = new Mat();
 
+        Bitmap dummy = ImageUtils.matToBitmap(gray0);
+
         // For Core.mixChannels.
         List<MatOfPoint> contours = new ArrayList<>();
         List<MatOfPoint2f> rectangles = new ArrayList<>();

@@ -1,5 +1,7 @@
 package com.example.docscanner.utils;
 
+import android.graphics.Bitmap;
+
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
@@ -47,8 +49,9 @@ public class PerspectiveTransformation {
         Mat transformation = Imgproc.getPerspectiveTransform(sortedCorners, imageOutline);
         // wrapPerspetive : 회전, 평행이동, 스케일을 포함한 변환 작업. 원본 이미지는 tranformation에 지정된 맵핑으로 변환되어 result에 저장.
         // 크기는 ROI로 지정된 영역만큼.
-        Imgproc.warpPerspective(src, result, transformation, size);
+        Imgproc.warpPerspective(src, result, transformation, size, Imgproc.INTER_LINEAR);
 
+        Bitmap dummy = ImageUtils.matToBitmap(result);
         return result;
     }
 
