@@ -1,7 +1,9 @@
 package com.example.docscanner;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -30,9 +32,12 @@ public class ImageEnhaceActivity extends Activity {
 
     Boolean isFabVisible;
 
+    BitmapDrawable drawable;
+    Bitmap img;
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_enhance);
 
@@ -53,9 +58,9 @@ public class ImageEnhaceActivity extends Activity {
         fabJpegText = findViewById(R.id.fabJpegText);
 
         fabPDFText.setVisibility(View.GONE);
-        fabPDF.setVisibility(View.GONE);
+        fabPDF.hide();
         fabJpegText.setVisibility(View.GONE);
-        fabPDF.setVisibility(View.GONE);
+        fabJpeg.hide();
 
         isFabVisible = false;
 
@@ -69,7 +74,7 @@ public class ImageEnhaceActivity extends Activity {
 
     }
 
-    private void initalizeEvent(){
+    private void initalizeEvent() {
         this.fabMain.setOnClickListener(FabMainClick);
         this.fabPDF.setOnClickListener(FabPDFClick);
         this.fabJpeg.setOnClickListener(FabJpegClick);
@@ -97,40 +102,55 @@ public class ImageEnhaceActivity extends Activity {
         }
     };
 
-    private View.OnClickListener FabMainClick = new View.OnClickListener(){
-      @Override
-      public void onClick(View v){
-          if(!isFabVisible) {
-              fabPDF.show();
-              fabJpeg.show();
-              fabPDFText.setVisibility(View.VISIBLE);
-              fabJpegText.setVisibility(View.VISIBLE);
+    private View.OnClickListener FabMainClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (!isFabVisible) {
+                fabPDF.show();
+                fabJpeg.show();
+                fabPDFText.setVisibility(View.VISIBLE);
+                fabJpegText.setVisibility(View.VISIBLE);
 
-              isFabVisible = true;
-          }
-          else{
-              fabPDF.hide();
-              fabJpeg.hide();
-              fabPDFText.setVisibility(View.GONE);
-              fabJpegText.setVisibility(View.GONE);
+                isFabVisible = true;
+            } else {
+                fabPDF.hide();
+                fabJpeg.hide();
+                fabPDFText.setVisibility(View.GONE);
+                fabJpegText.setVisibility(View.GONE);
 
-              isFabVisible = false;
-          }
-      }
+                isFabVisible = false;
+            }
+        }
     };
 
-    private View.OnClickListener FabPDFClick = new View.OnClickListener(){
+    private View.OnClickListener FabPDFClick = new View.OnClickListener() {
         @Override
-        public void onClick(View v){
+        public void onClick(View v) {
+
+            Intent intent = new Intent(getApplicationContext(), PopUpActivity.class);
+            startActivityForResult(intent, 1);
 
         }
     };
 
-    private View.OnClickListener FabJpegClick = new View.OnClickListener(){
+    private View.OnClickListener FabJpegClick = new View.OnClickListener() {
         @Override
-        public void onClick(View v){
-
+        public void onClick(View v) {
+            Intent intent = new Intent(getApplicationContext(), PopUpActivity.class);
+            startActivityForResult(intent, 2);
         }
     };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            String FileName = data.getStringExtra("file name");
+            FileName = FileName + ".pdf";
+
+        } else if (requestCode == 2 && requestCode == RESULT_OK) {
+
+        }
+    }
+
 
 }

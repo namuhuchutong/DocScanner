@@ -1,16 +1,23 @@
 package com.example.docscanner;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.example.docscanner.utils.CameraSurfaceView;
 import com.example.docscanner.utils.ImgConstants;
@@ -18,11 +25,13 @@ import com.example.docscanner.utils.NativeClass;
 
 import org.opencv.android.OpenCVLoader;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity {
 
+    final int PERMISSIONS_REQUEST_CODE = 1;
 
     Button btnOpenGallery;
     Button btnCapture;
@@ -48,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
 
         initializeElement();
         initializeEvent();
+        requestPermission();
+
     }
 
     private void initializeElement() {
@@ -151,6 +162,79 @@ public class MainActivity extends AppCompatActivity {
             selectedBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
             imgView.setImageBitmap(selectedBitmap);
             btnCapture.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void requestPermission() {
+        boolean shouldProviceRationale =
+                ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE);//사용자가 이전에 거절한적이 있어도 true 반환
+
+        if (shouldProviceRationale) {
+            //앱에 필요한 권한이 없어서 권한 요청
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_CODE);
+        } else {
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_CODE);
+            //권한있을때.
+            //오레오부터 꼭 권한체크내에서 파일 만들어줘야함
+            makeDir();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_CODE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //권한 허용 선택시
+                    //오레오부터 꼭 권한체크내에서 파일 만들어줘야함
+                    makeDir();
+                } else {
+                    //사용자가 권한 거절시
+                    denialDialog();
+                }
+                return;
+            }
+        }
+    }
+
+    public void denialDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("알림")
+                .setMessage("저장소 권한이 필요합니다. 환경 설정에서 저장소 권한을 허가해주세요.")
+                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent();
+                        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        Uri uri = Uri.fromParts("package",
+                                BuildConfig.APPLICATION_ID, null);
+                        intent.setData(uri);
+                        intent.setFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent); //확인버튼누르면 바로 어플리케이션 권한 설정 창으로 이동하도록
+                    }
+                })
+                .create()
+                .show();
+    }
+
+    public void makeDir() {
+        String root = Environment.getExternalStorageDirectory().getAbsolutePath(); //내장에 만든다
+        String directoryName = "imagedir";
+        final File myDir = new File(root +File.separator + directoryName);
+        if (!myDir.exists()) {
+            boolean wasSuccessful = myDir.mkdirs();
+            if (!wasSuccessful) {
+                System.out.println("file: was not successful.");
+            } else {
+                System.out.println("file: 최초로 앨범파일만듬." + root + "/" + directoryName);
+            }
+        } else {
+            System.out.println("file: " + root + "/" + directoryName +"already exists");
         }
     }
 }

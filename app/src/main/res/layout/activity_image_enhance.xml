@@ -66,7 +66,7 @@
         android:layout_marginEnd="8dp"
         android:text="Jpeg Attachment"
         app:layout_constraintBottom_toBottomOf="@+id/fabJpeg"
-        app:layout_constraintEnd_toStartOf="@+id/fabJpeg"
+        app:layout_constraintEnd_toStartOf="@+id/fabMain"
         app:layout_constraintTop_toTopOf="@+id/fabJpeg"
         />
 
