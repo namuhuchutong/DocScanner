@@ -222,6 +222,8 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
+    //FIX SHIT THE FUCK HERE!
+
     public void makeDir() {
         String root = Environment.getExternalStorageDirectory().getAbsolutePath(); //내장에 만든다
         String directoryName = "imagedir";

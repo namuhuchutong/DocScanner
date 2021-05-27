@@ -6,15 +6,14 @@ import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.view.Gravity;
-import android.graphics.drawable.BitmapDrawable;
-
 
 import com.example.docscanner.utils.ImgConstants;
 import com.example.docscanner.utils.NativeClass;
@@ -123,15 +122,14 @@ public class ImageCropActivity extends Activity{
         Log.i(IMAGE_DEBUG, "ScaledBitmap");
         Log.i(IMAGE_DEBUG, width + " " + height);
 
-
-        /*
-        *   FIX HERE!!
-         */
-
-        boolean a;
         Matrix m = new Matrix();
-        a = m.setRectToRect(new RectF(0, 0, bitmap.getHeight(), bitmap.getHeight()), new RectF(0, 0, width, height), Matrix.ScaleToFit.CENTER);
+        RectF drawableRect = new RectF(0, 0, width, height);
+        RectF originalRect = new RectF(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+        m.setRectToRect(originalRect, drawableRect, Matrix.ScaleToFit.CENTER);
+
         Bitmap result = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), m, true);
+
         return result;
     }
 
