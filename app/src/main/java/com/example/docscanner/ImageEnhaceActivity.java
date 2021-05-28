@@ -3,6 +3,7 @@ package com.example.docscanner;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.View;
@@ -19,8 +20,6 @@ public class ImageEnhaceActivity extends Activity {
     ImageView imageView;
     Bitmap selectedImageBitmap;
 
-    Button btnImgEnhace;
-
     NativeClass nativeClass;
 
     FloatingActionButton fabMain;
@@ -32,9 +31,10 @@ public class ImageEnhaceActivity extends Activity {
 
     Boolean isFabVisible;
 
-    BitmapDrawable drawable;
-    Bitmap img;
 
+    Button btnRotateLeft;
+    Button btnSave;
+    Button btnRotateRight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +49,10 @@ public class ImageEnhaceActivity extends Activity {
     private void initializeElement() {
 
         nativeClass = new NativeClass();
+
+        btnRotateLeft = findViewById(R.id.btnRotateLeft);
+        btnRotateRight = findViewById(R.id.btnRotateRight);
+        btnSave = findViewById(R.id.btnImageSave);
 
         imageView = findViewById(R.id.imageView);
         fabMain = findViewById(R.id.fabMain);
@@ -78,24 +82,39 @@ public class ImageEnhaceActivity extends Activity {
         this.fabMain.setOnClickListener(FabMainClick);
         this.fabPDF.setOnClickListener(FabPDFClick);
         this.fabJpeg.setOnClickListener(FabJpegClick);
+        this.btnRotateLeft.setOnClickListener(btnRoateLeftClick);
+        this.btnRotateRight.setOnClickListener(btnRoateRightClick);
+        this.btnSave.setOnClickListener(btnImageSaveClick);
     }
 
-    private View.OnClickListener btnImageToBWClick = new View.OnClickListener() {
+    private View.OnClickListener btnRoateLeftClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            Matrix m = new Matrix();
+            m.postRotate(-90);
+            BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+            Bitmap bitmap = drawable.getBitmap();
+            Bitmap result = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), m, false);
 
+            imageView.setImageBitmap(result);
+        }
+    };
+
+    private View.OnClickListener btnRoateRightClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Matrix m = new Matrix();
+            m.postRotate(90);
+            BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+            Bitmap bitmap = drawable.getBitmap();
+            Bitmap result = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), m, false);
+
+            imageView.setImageBitmap(result);
 
         }
     };
 
-    private View.OnClickListener btnImageToMagicColorClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-        }
-    };
-
-    private View.OnClickListener btnImageToGrayClick = new View.OnClickListener() {
+    private View.OnClickListener btnImageSaveClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 

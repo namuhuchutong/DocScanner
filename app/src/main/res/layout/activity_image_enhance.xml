@@ -7,31 +7,31 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/btnImageToBW"
+        android:id="@+id/btnRotateLeft"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="B &amp; W"
+        android:text="Left"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btnImageToMagicColor"
+        app:layout_constraintEnd_toStartOf="@id/btnImageSave"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/btnImageToMagicColor"
+        android:id="@+id/btnImageSave"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Magic Color"
+        android:text="Save"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/btnImageToGray"
-        app:layout_constraintStart_toEndOf="@id/btnImageToBW" />
+        app:layout_constraintEnd_toEndOf="@id/btnRotateRight"
+        app:layout_constraintStart_toEndOf="@id/btnRotateLeft" />
 
     <Button
-        android:id="@+id/btnImageToGray"
+        android:id="@+id/btnRotateRight"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Gray Color"
+        android:text="Right"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btnImageToMagicColor" />
+        app:layout_constraintStart_toEndOf="@id/btnImageSave" />
 
 
     <ImageView
@@ -41,7 +41,7 @@
         android:layout_gravity="center"
         android:adjustViewBounds="true"
         android:padding="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnImageToBW"
+        app:layout_constraintBottom_toTopOf="@+id/btnRotateLeft"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -101,7 +101,7 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         app:srcCompat="@drawable/mail_fab"
-        app:layout_constraintBottom_toTopOf="@id/btnImageToGray"
+        app:layout_constraintBottom_toTopOf="@id/btnRotateRight"
         app:layout_constraintEnd_toEndOf="parent"
          />
 

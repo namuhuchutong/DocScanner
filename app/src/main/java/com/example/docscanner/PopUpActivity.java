@@ -47,6 +47,15 @@ public class PopUpActivity extends Activity {
         finish();
     }
 
+    public void btnNoClick(View v){
+        Intent intent = new Intent();
+        Random rnd = new Random();
+        String randomStr = String.valueOf((char) ((int) (rnd.nextInt(26)) + 97));
+
+        intent.putExtra("file name", randomStr);
+        setResult(RESULT_OK, intent);
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event){
         if(event.getAction() == MotionEvent.ACTION_OUTSIDE){
