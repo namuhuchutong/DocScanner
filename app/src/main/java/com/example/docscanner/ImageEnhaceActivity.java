@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.docscanner.utils.ImgConstants;
 import com.example.docscanner.utils.NativeClass;
@@ -168,9 +169,11 @@ public class ImageEnhaceActivity extends Activity {
 
 
 
-        } else if (requestCode == 2 && requestCode == RESULT_OK) {
+        } else if (requestCode == 2 && resultCode == RESULT_OK) {
 
 
+        } else if (resultCode == RESULT_CANCELED){
+            Toast.makeText(this, "Canceled", Toast.LENGTH_SHORT).show();
         }
     }
 

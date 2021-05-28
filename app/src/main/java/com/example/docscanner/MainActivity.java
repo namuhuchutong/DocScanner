@@ -16,7 +16,9 @@ import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
 import com.example.docscanner.utils.CameraSurfaceView;
@@ -58,7 +60,6 @@ public class MainActivity extends Activity {
         initializeElement();
         initializeEvent();
         requestPermission();
-
     }
 
     private void initializeElement() {
@@ -172,10 +173,10 @@ public class MainActivity extends Activity {
         if (shouldProviceRationale) {
             //앱에 필요한 권한이 없어서 권한 요청
             ActivityCompat.requestPermissions(MainActivity.this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_CODE);
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_CODE);
         } else {
             ActivityCompat.requestPermissions(MainActivity.this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_CODE);
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_CODE);
             //권한있을때.
             //오레오부터 꼭 권한체크내에서 파일 만들어줘야함
             makeDir();
@@ -184,7 +185,8 @@ public class MainActivity extends Activity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+                                           @NonNull String permissions[],@NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case PERMISSIONS_REQUEST_CODE: {
                 // If request is cancelled, the result arrays are empty.
@@ -196,8 +198,8 @@ public class MainActivity extends Activity {
                 } else {
                     //사용자가 권한 거절시
                     denialDialog();
+                    Toast.makeText(getApplicationContext(), "PERMISSION_DENIED", Toast.LENGTH_SHORT).show();
                 }
-                return;
             }
         }
     }
@@ -222,9 +224,12 @@ public class MainActivity extends Activity {
                 .show();
     }
 
-    //FIX SHIT THE FUCK HERE!
 
-    public void makeDir() {
+    // https://developer.android.com/training/permissions/requesting?hl=ko
+    // https://stackoverflow.com/questions/33030933/android-6-0-open-failed-eacces-permission-denied/33031091#33031091
+    // android6.0에서 유저 권한을 얻는 방식이 바뀜.
+
+   public void makeDir() {
         String root = Environment.getExternalStorageDirectory().getAbsolutePath(); //내장에 만든다
         String directoryName = "imagedir";
         final File myDir = new File(root +File.separator + directoryName);

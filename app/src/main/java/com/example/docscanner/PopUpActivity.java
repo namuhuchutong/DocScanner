@@ -49,11 +49,9 @@ public class PopUpActivity extends Activity {
 
     public void btnNoClick(View v){
         Intent intent = new Intent();
-        Random rnd = new Random();
-        String randomStr = String.valueOf((char) ((int) (rnd.nextInt(26)) + 97));
+        setResult(RESULT_CANCELED, intent);
 
-        intent.putExtra("file name", randomStr);
-        setResult(RESULT_OK, intent);
+        finish();
     }
 
     @Override
