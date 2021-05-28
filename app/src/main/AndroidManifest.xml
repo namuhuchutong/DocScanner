@@ -15,18 +15,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DocScanner"
         android:requestLegacyExternalStorage="true">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".MainActivity">
         </activity>
         <activity android:name=".ImageCropActivity" />
         <activity android:name=".ImageEnhaceActivity"/>
         <activity android:name=".CamActivity"/>
         <activity android:name=".CameraActivity"/>
         <activity android:name=".PopUpActivity" android:theme="@android:style/Theme.Dialog"/>
+
     </application>
 
 </manifest>
