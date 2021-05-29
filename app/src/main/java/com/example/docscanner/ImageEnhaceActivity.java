@@ -3,8 +3,12 @@ package com.example.docscanner;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +19,10 @@ import android.widget.Toast;
 import com.example.docscanner.utils.ImgConstants;
 import com.example.docscanner.utils.NativeClass;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class ImageEnhaceActivity extends Activity {
 
@@ -148,7 +156,7 @@ public class ImageEnhaceActivity extends Activity {
         public void onClick(View v) {
 
             Intent intent = new Intent(getApplicationContext(), PopUpActivity.class);
-            startActivityForResult(intent, 1);
+            startActivityForResult(intent, 110);
 
         }
     };
@@ -157,19 +165,40 @@ public class ImageEnhaceActivity extends Activity {
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(getApplicationContext(), PopUpActivity.class);
-            startActivityForResult(intent, 2);
+            startActivityForResult(intent, 120);
         }
     };
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1 && resultCode == RESULT_OK) {
+        if (requestCode == 110 && resultCode == RESULT_OK) {
             String FileName = data.getStringExtra("file name");
-            FileName = FileName + ".pdf";
+            FileName = ImgConstants.sdPath + File.separator+ FileName + ".pdf";
+            File path = new File(FileName);
 
+            BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+            Bitmap bitmap = drawable.getBitmap();
 
+            PdfDocument document = new PdfDocument();
+            PdfDocument.PageInfo pageinfo  = new PdfDocument.PageInfo.Builder(bitmap.getHeight(), bitmap.getHeight(), 1).create();
+            PdfDocument.Page page = document.startPage(pageinfo);
 
-        } else if (requestCode == 2 && resultCode == RESULT_OK) {
+            Canvas canvas = page.getCanvas();
+            Paint paint = new Paint();
+            paint.setColor(Color.parseColor("#ffffff"));
+            canvas.drawPaint(paint);
+            paint.setColor(Color.BLUE);
+            canvas.drawBitmap(bitmap, 0, 0, null);
+            document.finishPage(page);
+
+            try {
+                document.writeTo(new FileOutputStream(path));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            document.close();
+
+        } else if (requestCode == 120 && resultCode == RESULT_OK) {
 
 
         } else if (resultCode == RESULT_CANCELED){
@@ -177,13 +206,14 @@ public class ImageEnhaceActivity extends Activity {
         }
     }
 
+
     private void sendEmail(){
         Intent email = new Intent(Intent.ACTION_SEND);
         email.setType("plain/text");
         String[] address = {"email@address.com"};
         email.putExtra(Intent.EXTRA_EMAIL, address);
-        email.putExtra(Intent.EXTRA_SUBJECT, "test@test");
-        email.putExtra(Intent.EXTRA_TEXT, "내용 미리보기 (미리적을 수 있음)");
+        email.putExtra(Intent.EXTRA_SUBJECT, "Title");
+        email.putExtra(Intent.EXTRA_TEXT, "Content");
         startActivity(email);
     }
 
