@@ -1,7 +1,10 @@
 package com.example.docscanner;
 
 import android.app.Activity;
+import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -9,7 +12,10 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.pdf.PdfDocument;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -180,7 +186,7 @@ public class ImageEnhaceActivity extends Activity {
             Bitmap bitmap = drawable.getBitmap();
 
             PdfDocument document = new PdfDocument();
-            PdfDocument.PageInfo pageinfo  = new PdfDocument.PageInfo.Builder(bitmap.getHeight(), bitmap.getHeight(), 1).create();
+            PdfDocument.PageInfo pageinfo  = new PdfDocument.PageInfo.Builder(bitmap.getWidth(), bitmap.getHeight(), 1).create();
             PdfDocument.Page page = document.startPage(pageinfo);
 
             Canvas canvas = page.getCanvas();
@@ -198,6 +204,8 @@ public class ImageEnhaceActivity extends Activity {
             }
             document.close();
 
+            //sendEmail(Uri.fromFile(path));
+
         } else if (requestCode == 120 && resultCode == RESULT_OK) {
 
 
@@ -207,14 +215,33 @@ public class ImageEnhaceActivity extends Activity {
     }
 
 
-    private void sendEmail(){
-        Intent email = new Intent(Intent.ACTION_SEND);
-        email.setType("plain/text");
-        String[] address = {"email@address.com"};
-        email.putExtra(Intent.EXTRA_EMAIL, address);
-        email.putExtra(Intent.EXTRA_SUBJECT, "Title");
-        email.putExtra(Intent.EXTRA_TEXT, "Content");
-        startActivity(email);
+    private void sendEmail(Uri attachment){
+        try {
+            Intent email = new Intent(Intent.ACTION_SEND);
+            email.setType("plain/text");
+            String[] address = {"email@address.com"};
+            email.putExtra(Intent.EXTRA_EMAIL, address);
+            email.putExtra(Intent.EXTRA_SUBJECT, "Title");
+            email.putExtra(Intent.EXTRA_STREAM, attachment);
+            email.putExtra(Intent.EXTRA_TEXT, "Content");
+            startActivity(email);
+        }catch (Throwable t){
+            Log.i("sending maill exception", t.toString());
+            Toast.makeText(this, "Request failed try again", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // FIX HERE!
+
+    public Uri getUriFromPath(Context context, String filePath) {
+        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                null, "_data = '" + filePath + "'", null, null);
+
+        cursor.moveToFirst();
+        int id = cursor.getInt(cursor.getColumnIndex("_id"));
+        Uri uri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
+
+        return uri;
     }
 
 

@@ -178,7 +178,6 @@ public class MainActivity extends Activity {
             ActivityCompat.requestPermissions(MainActivity.this,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_CODE);
             //권한있을때.
-            //오레오부터 꼭 권한체크내에서 파일 만들어줘야함
             makeDir();
         }
     }
@@ -193,7 +192,6 @@ public class MainActivity extends Activity {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //권한 허용 선택시
-                    //오레오부터 꼭 권한체크내에서 파일 만들어줘야함
                     makeDir();
                 } else {
                     //사용자가 권한 거절시
