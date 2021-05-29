@@ -27,6 +27,7 @@ import com.example.docscanner.utils.NativeClass;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -207,6 +208,22 @@ public class ImageEnhaceActivity extends Activity {
             //sendEmail(Uri.fromFile(path));
 
         } else if (requestCode == 120 && resultCode == RESULT_OK) {
+            String FileName = data.getStringExtra("file name");
+            FileName = ImgConstants.sdPath + File.separator+ FileName + ".jpeg";
+            File path = new File(FileName);
+
+            BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+            Bitmap bitmap = drawable.getBitmap();
+
+            try {
+                FileOutputStream outstream = new FileOutputStream(path);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outstream);
+                outstream.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
 
         } else if (resultCode == RESULT_CANCELED){
