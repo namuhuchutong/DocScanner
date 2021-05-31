@@ -133,7 +133,8 @@ public class ImageEnhaceActivity extends Activity {
     private View.OnClickListener btnImageSaveClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
+            Intent intent = new Intent(getApplicationContext(), PopUpActivity.class);
+            startActivityForResult(intent, 120);
         }
     };
 
