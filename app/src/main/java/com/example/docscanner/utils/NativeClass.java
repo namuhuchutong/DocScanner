@@ -80,7 +80,7 @@ public class NativeClass {
 
         Bitmap dummy = ImageUtils.matToBitmap(gray0);
 
-        // For Core.mixChannels.
+        // Core.mixChannels.
         List<MatOfPoint> contours = new ArrayList<>();
         List<MatOfPoint2f> rectangles = new ArrayList<>();
 
@@ -89,10 +89,10 @@ public class NativeClass {
         List<Mat> destinations = new ArrayList<>();
         destinations.add(gray0);
 
-        // To filter rectangles by their areas.
+        // 사각형 필
         int srcArea = src.rows() * src.cols();
 
-        // Find squares in every color plane of the image.
+        // 모든 경계를 탐색
         for (int c = 0; c < 3; c++) {
             int[] ch = {c, 0};
             MatOfInt fromTo = new MatOfInt(ch);
@@ -158,7 +158,7 @@ public class NativeClass {
             return false;
         }
 
-        // Check if the all angles are more than 72.54 degrees (cos 0.3).
+        // 코사인 값( 72.5도) 0.3을 넘으면 안됨. -> 이미지 변환 시 에러 발생
         double maxCosine = 0;
         Point[] approxPoints = polygon.toArray();
 

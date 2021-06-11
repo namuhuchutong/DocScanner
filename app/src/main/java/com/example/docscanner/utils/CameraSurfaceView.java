@@ -9,6 +9,10 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+/*
+    카메라 전환없이 해당 앱에서 직접 카메라 동작을 확인 가능.
+
+ */
 
 public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
 

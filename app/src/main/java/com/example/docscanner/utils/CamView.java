@@ -10,7 +10,10 @@ import org.opencv.android.JavaCameraView;
 
 import java.io.FileOutputStream;
 import java.util.List;
-
+/*
+    미 사용 클래스 -> openCV에서 기본 제공 카메라 제어 클래스
+    -> 안드로이드에서 기본으로 제공하는 모듈 활용
+ */
 
 public class CamView extends JavaCameraView implements Camera.PictureCallback {
 

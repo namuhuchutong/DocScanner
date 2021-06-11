@@ -10,6 +10,12 @@ import java.util.List;
 
 public class mathUtils {
 
+    /*
+        이미지 변환 연산은 Matrix 형태로 진행
+
+        이지미 변환, 각 연산 메서드
+     */
+
     public static MatOfPoint toMatOfPointInt(MatOfPoint2f mat) {
         MatOfPoint matInt = new MatOfPoint();
         mat.convertTo(matInt, CvType.CV_32S);
