@@ -22,6 +22,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.content.FileProvider;
+
 import com.example.docscanner.utils.ImgConstants;
 import com.example.docscanner.utils.NativeClass;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -286,6 +288,7 @@ public class ImageEnhaceActivity extends Activity {
             File file = new File(filename);
 
             if (!file.exists() || !file.canRead()) {
+                Log.e("PDF FILE", "Doesn't exist!");
                 Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT).show();
             }
 
@@ -294,7 +297,13 @@ public class ImageEnhaceActivity extends Activity {
                 android.os.FileUriExposedException: file:///storage/emulated/0/imagedir/324fsf.pdf exposed beyond app through ClipData.Item.getUri()
              */
 
-            Uri attachment = Uri.fromFile(file);
+            /*
+                https://developer.android.com/reference/androidx/core/content/FileProvider
+                android 7.0 Uri 노출 금지
+
+             */
+
+            Uri attachment = FileProvider.getUriForFile(this, "com.example.docscanner.fileprovider", file);
 
             email.setType("plain/text");
             String[] address = {"email@address.com"};
