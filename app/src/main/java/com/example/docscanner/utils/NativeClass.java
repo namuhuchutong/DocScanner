@@ -174,10 +174,24 @@ public class NativeClass {
         return true;
     }
 
+
     public static Bitmap imgToBW(Bitmap bitmap){
         Mat mat = ImageUtils.bitmapToMat(bitmap);
+
+        Mat gray = new Mat();
+        Imgproc.cvtColor(mat, gray, Imgproc.COLOR_BGR2GRAY);
+
         Mat dest = new Mat(mat.rows(), mat.cols(), mat.type());
-        Imgproc.equalizeHist(mat, dest);
+        Imgproc.equalizeHist(gray, dest);
+        Bitmap result = ImageUtils.matToBitmap(dest);
+        return result;
+    }
+
+    public static Bitmap imgToBright(Bitmap bitmap, double alpha, double beta){
+        Mat mat = ImageUtils.bitmapToMat(bitmap);
+        Mat dest = new Mat(mat.rows(), mat.cols(), mat.type());
+
+        mat.convertTo(dest, -1, alpha, beta);
         Bitmap result = ImageUtils.matToBitmap(dest);
         return result;
     }

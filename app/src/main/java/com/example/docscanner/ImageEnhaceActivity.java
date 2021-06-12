@@ -35,6 +35,7 @@ public class ImageEnhaceActivity extends Activity {
 
     ImageView imageView;
     Bitmap selectedImageBitmap;
+    Bitmap orign;
 
     NativeClass nativeClass;
 
@@ -54,7 +55,7 @@ public class ImageEnhaceActivity extends Activity {
 
     Button btnOrignal;
     Button btnBW;
-    Button btnSharp;
+    Button btnBrightness;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +77,7 @@ public class ImageEnhaceActivity extends Activity {
 
         btnOrignal = findViewById(R.id.btnOrignal);
         btnBW = findViewById(R.id.btnBW);
-        btnSharp = findViewById(R.id.btnSharp);
+        btnBrightness = findViewById(R.id.btnBrightness);
 
         imageView = findViewById(R.id.imageView);
         fabMain = findViewById(R.id.fabMain);
@@ -97,6 +98,7 @@ public class ImageEnhaceActivity extends Activity {
     private void initializeImage() {
 
         selectedImageBitmap = ImgConstants.selectedimgBitmap;
+        orign = ImgConstants.selectedimgBitmap;
         ImgConstants.selectedimgBitmap = null;
         imageView.setImageBitmap(selectedImageBitmap);
 
@@ -111,26 +113,38 @@ public class ImageEnhaceActivity extends Activity {
         this.btnSave.setOnClickListener(btnImageSaveClick);
         this.btnOrignal.setOnClickListener(btnOrignalClick);
         this.btnBW.setOnClickListener(btnBWClick);
-        this.btnSharp.setOnClickListener(btnSharpClick);
+        this.btnBrightness.setOnClickListener(btnBrightnessclick);
     }
 
     private View.OnClickListener btnOrignalClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
+            imageView.setImageBitmap(orign);
         }
     };
 
     private View.OnClickListener btnBWClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+            Bitmap bitmap = drawable.getBitmap();
+            Bitmap res;
+
+            res = nativeClass.imgToBW(bitmap);
+            imageView.setImageBitmap(res);
 
         }
     };
 
-    private View.OnClickListener btnSharpClick = new View.OnClickListener() {
+    private View.OnClickListener btnBrightnessclick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+            Bitmap bitmap = drawable.getBitmap();
+            Bitmap res;
+
+            res = nativeClass.imgToBright(bitmap, 1, 50);
+            imageView.setImageBitmap(res);
 
         }
     };
