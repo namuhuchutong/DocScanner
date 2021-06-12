@@ -98,11 +98,14 @@ public class MainActivity extends Activity {
         @Override
         public void onClick(View v){
 
-            ImgConstants.selectedimgBitmap = selectedBitmap;
+            if(selectedBitmap == null)
+                Toast.makeText(getApplicationContext(), "No Image!", Toast.LENGTH_SHORT).show();
+            else {
+                ImgConstants.selectedimgBitmap = selectedBitmap;
 
-            Intent intent = new Intent(getApplicationContext(), ImageCropActivity.class);
-            startActivity(intent);
-
+                Intent intent = new Intent(getApplicationContext(), ImageCropActivity.class);
+                startActivity(intent);
+            }
         }
     };
 
@@ -182,6 +185,11 @@ public class MainActivity extends Activity {
         }
     }
 
+    /*
+        퍼미션 요청 후 처리 영역
+        사용자가 권한을 승인하면 파일을 생성한다.
+     */
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String permissions[],@NonNull int[] grantResults) {
@@ -201,7 +209,9 @@ public class MainActivity extends Activity {
             }
         }
     }
-
+    /*
+        유저가 권한을 거부할 경우 다이얼로그를 띄움
+     */
     public void denialDialog() {
         new AlertDialog.Builder(this)
                 .setTitle("알림")

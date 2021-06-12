@@ -252,7 +252,7 @@ public class ImageEnhaceActivity extends Activity {
             }
             document.close();
 
-            //sendEmail(Uri.fromFile(path));
+            sendEmail(FileName);
 
         } else if (requestCode == 120 && resultCode == RESULT_OK) {
             String FileName = data.getStringExtra("file name");
@@ -279,9 +279,23 @@ public class ImageEnhaceActivity extends Activity {
     }
 
 
-    private void sendEmail(Uri attachment){
+    private void sendEmail(String filename){
         try {
             Intent email = new Intent(Intent.ACTION_SEND);
+
+            File file = new File(filename);
+
+            if (!file.exists() || !file.canRead()) {
+                Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT).show();
+            }
+
+            /*
+                Issue#5
+                android.os.FileUriExposedException: file:///storage/emulated/0/imagedir/324fsf.pdf exposed beyond app through ClipData.Item.getUri()
+             */
+
+            Uri attachment = Uri.fromFile(file);
+
             email.setType("plain/text");
             String[] address = {"email@address.com"};
             email.putExtra(Intent.EXTRA_EMAIL, address);
