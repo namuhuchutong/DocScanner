@@ -6,6 +6,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent">
 
+
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Orignal"
+        android:id="@+id/btnOrignal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="B/W"
+        android:id="@+id/btnBW"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/btnOrignal"
+        app:layout_constraintRight_toLeftOf="@id/btnBrightness"
+        />
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Brightness"
+        android:id="@+id/btnBrightness"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/btnBrightness"
+        />
+
+
     <Button
         android:id="@+id/btnRotateLeft"
         android:layout_width="0dp"

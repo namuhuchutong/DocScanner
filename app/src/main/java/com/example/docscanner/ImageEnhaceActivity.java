@@ -52,6 +52,10 @@ public class ImageEnhaceActivity extends Activity {
     Button btnSave;
     Button btnRotateRight;
 
+    Button btnOrignal;
+    Button btnBW;
+    Button btnSharp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +73,10 @@ public class ImageEnhaceActivity extends Activity {
         btnRotateLeft = findViewById(R.id.btnRotateLeft);
         btnRotateRight = findViewById(R.id.btnRotateRight);
         btnSave = findViewById(R.id.btnImageSave);
+
+        btnOrignal = findViewById(R.id.btnOrignal);
+        btnBW = findViewById(R.id.btnBW);
+        btnSharp = findViewById(R.id.btnSharp);
 
         imageView = findViewById(R.id.imageView);
         fabMain = findViewById(R.id.fabMain);
@@ -101,7 +109,31 @@ public class ImageEnhaceActivity extends Activity {
         this.btnRotateLeft.setOnClickListener(btnRoateLeftClick);
         this.btnRotateRight.setOnClickListener(btnRoateRightClick);
         this.btnSave.setOnClickListener(btnImageSaveClick);
+        this.btnOrignal.setOnClickListener(btnOrignalClick);
+        this.btnBW.setOnClickListener(btnBWClick);
+        this.btnSharp.setOnClickListener(btnSharpClick);
     }
+
+    private View.OnClickListener btnOrignalClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
+
+    private View.OnClickListener btnBWClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
+
+    private View.OnClickListener btnSharpClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
 
     private View.OnClickListener btnRoateLeftClick = new View.OnClickListener() {
         @Override

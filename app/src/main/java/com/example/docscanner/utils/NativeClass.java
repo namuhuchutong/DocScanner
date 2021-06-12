@@ -89,7 +89,7 @@ public class NativeClass {
         List<Mat> destinations = new ArrayList<>();
         destinations.add(gray0);
 
-        // 사각형 필
+        // 사각형 filter
         int srcArea = src.rows() * src.cols();
 
         // 모든 경계를 탐색
@@ -172,6 +172,14 @@ public class NativeClass {
         }
 
         return true;
+    }
+
+    public static Bitmap imgToBW(Bitmap bitmap){
+        Mat mat = ImageUtils.bitmapToMat(bitmap);
+        Mat dest = new Mat(mat.rows(), mat.cols(), mat.type());
+        Imgproc.equalizeHist(mat, dest);
+        Bitmap result = ImageUtils.matToBitmap(dest);
+        return result;
     }
 
 }
