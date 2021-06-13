@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.docscanner.utils.ImgConstants;
 import com.example.docscanner.utils.NativeClass;
@@ -141,13 +142,17 @@ public class ImageCropActivity extends Activity{
     }
 
     private List<PointF> getContourEdgePoints(Bitmap tempBitmap){
-
-        MatOfPoint2f point2f = nativeClass.getPoint(tempBitmap);
-        List<Point> points = Arrays.asList(point2f.toArray());
-
         List<PointF> result = new ArrayList<>();
-        for (int i = 0; i < points.size(); i++) {
-            result.add(new PointF(((float) points.get(i).x), ((float) points.get(i).y)));
+        try {
+            MatOfPoint2f point2f = nativeClass.getPoint(tempBitmap);
+            List<Point> points = Arrays.asList(point2f.toArray());
+
+            for (int i = 0; i < points.size(); i++) {
+                result.add(new PointF(((float) points.get(i).x), ((float) points.get(i).y)));
+            }
+        }catch (Throwable t){
+            Log.i("image exception", t.toString());
+            Toast.makeText(this, "Image processing fail", Toast.LENGTH_SHORT).show();
         }
 
         return result;

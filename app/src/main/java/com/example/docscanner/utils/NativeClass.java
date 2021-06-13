@@ -54,6 +54,8 @@ public class NativeClass {
         Mat downscaled = new Mat(downscaledSize, src.type());
         Imgproc.resize(src, downscaled, downscaledSize);
 
+        Bitmap dummy = ImageUtils.matToBitmap(downscaled);
+
         List<MatOfPoint2f> rectangles = getPoints(downscaled);
         if (rectangles.size() == 0) {
             return null;
