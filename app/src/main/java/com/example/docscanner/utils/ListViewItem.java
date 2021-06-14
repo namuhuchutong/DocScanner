@@ -3,6 +3,7 @@ package com.example.docscanner.utils;
 
 import android.graphics.drawable.Drawable;
 
+// 미사용 클래스
 
 /*
  *   created by : ppotta

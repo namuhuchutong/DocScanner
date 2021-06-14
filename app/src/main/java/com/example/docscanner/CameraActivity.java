@@ -13,7 +13,9 @@ import android.widget.ImageView;
 import com.example.docscanner.utils.CameraSurfaceView;
 
 import java.io.ByteArrayOutputStream;
-
+/*
+    미사용
+ */
 public class CameraActivity extends Activity {
 
 

@@ -9,7 +9,9 @@ import android.view.Window;
 import android.widget.EditText;
 
 import java.util.Random;
-
+/*
+    파일 이름 지정 팝업
+ */
 public class PopUpActivity extends Activity {
 
     EditText textView;
@@ -37,6 +39,7 @@ public class PopUpActivity extends Activity {
             setResult(RESULT_OK, intent);
 
         }else{
+            // 임의로 이름 지정함.
             Random rnd = new Random();
             String randomStr = String.valueOf((char) ((int) (rnd.nextInt(26)) + 97));
 
@@ -56,6 +59,7 @@ public class PopUpActivity extends Activity {
 
     @Override
     public boolean onTouchEvent(MotionEvent event){
+        // 영역 밖에 터치 방지
         if(event.getAction() == MotionEvent.ACTION_OUTSIDE){
             return false;
         }
@@ -64,6 +68,7 @@ public class PopUpActivity extends Activity {
 
     @Override
     public void onBackPressed(){
+        // 뒤로가기 방지
         return;
     }
 }

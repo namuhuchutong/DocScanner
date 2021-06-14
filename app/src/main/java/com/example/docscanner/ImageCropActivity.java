@@ -71,10 +71,12 @@ public class ImageCropActivity extends Activity{
         selectedImgBitmap = ImgConstants.selectedimgBitmap;
         ImgConstants.selectedimgBitmap = null;
 
+        // PolyView 크기에 맞춰 스케일링
         Bitmap scaledbitmap = scaledBitmap(selectedImgBitmap, holder.getWidth(), holder.getHeight());
         imgView.setImageBitmap(scaledbitmap);
 
         Bitmap tempBitmap = ((BitmapDrawable) imgView.getDrawable()).getBitmap();
+        // 인식한 모서리 점 가져오기
         Map<Integer, PointF> pointFs = getEdgePoints(tempBitmap);
 
         polygonView.setPoints(pointFs);
@@ -98,6 +100,10 @@ public class ImageCropActivity extends Activity{
         }
     };
 
+
+    /*
+        스케일링된 이미지 모서리 가져오기. (인식한 ROI가 아닌 원본 이미지 모서리)
+     */
     protected Bitmap getCroppedImage() {
 
         Map<Integer, PointF> points = polygonView.getPoints();
@@ -119,6 +125,7 @@ public class ImageCropActivity extends Activity{
     }
 
 
+    // 이미지 스케일링
     private Bitmap scaledBitmap(Bitmap bitmap, int width, int height){
         Log.i(IMAGE_DEBUG, "ScaledBitmap");
         Log.i(IMAGE_DEBUG, width + " " + height);
@@ -134,6 +141,7 @@ public class ImageCropActivity extends Activity{
         return result;
     }
 
+    // 인식한 윤곽 모서리 점
     private Map<Integer, PointF> getEdgePoints(Bitmap tempBitmap){
 
        List<PointF> pointFs = getContourEdgePoints(tempBitmap);
@@ -141,6 +149,7 @@ public class ImageCropActivity extends Activity{
        return orderedPoints;
     }
 
+    // 인식 알고리즘 시작.
     private List<PointF> getContourEdgePoints(Bitmap tempBitmap){
         List<PointF> result = new ArrayList<>();
         try {
@@ -158,6 +167,7 @@ public class ImageCropActivity extends Activity{
         return result;
     }
 
+    // 원본 이미지 점들
     private Map<Integer, PointF> getOutlinePoints(Bitmap tempBitmap){
 
         Map<Integer, PointF> outlinePoints = new HashMap<>();
@@ -168,6 +178,7 @@ public class ImageCropActivity extends Activity{
         return outlinePoints;
     }
 
+    // 윤곽 시각화를 위한 점들이 변환이 가능 여부
     private Map<Integer, PointF> orderedValidEdgePoints(Bitmap tempBitmap, List<PointF> pointFs) {
         Map<Integer, PointF> orderedPoints = polygonView.getOrderedPoints(pointFs);
         if (!polygonView.isValidShape(orderedPoints))

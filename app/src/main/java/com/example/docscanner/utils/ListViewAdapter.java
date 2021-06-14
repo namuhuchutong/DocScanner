@@ -14,6 +14,8 @@ import com.example.docscanner.R;
 import java.util.ArrayList;
 
 /*
+*   미사용 클래스
+*
 *   created by : ppotta
 *   https://recipes4dev.tistory.com/43
  */

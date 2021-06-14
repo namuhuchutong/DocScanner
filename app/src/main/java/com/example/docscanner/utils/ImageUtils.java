@@ -1,20 +1,17 @@
 package com.example.docscanner.utils;
 
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
 
 import org.opencv.android.Utils;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
-
+/*
+    matrix -> bitmap,
+    bitmap -> matrix 연산 모
+ */
 public class ImageUtils {
 
-    public static Bitmap rotateBitmap(Bitmap original, int angle) {
-        Matrix matrix = new Matrix();
-        matrix.postRotate(90);
-        return Bitmap.createBitmap(original, 0, 0, original.getWidth(), original.getHeight(), matrix, true);
-    }
     /*
     *       왜 자꾸 에러가 나오는가?
     *       제대로 로딩이 안되는 문제인가?

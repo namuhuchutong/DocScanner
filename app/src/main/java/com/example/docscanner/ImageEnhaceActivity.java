@@ -1,10 +1,7 @@
 package com.example.docscanner;
 
 import android.app.Activity;
-import android.content.ContentUris;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -14,7 +11,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -118,6 +114,7 @@ public class ImageEnhaceActivity extends Activity {
         this.btnBrightness.setOnClickListener(btnBrightnessclick);
     }
 
+    // 원본 이미지 저장
     private View.OnClickListener btnOrignalClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -125,6 +122,7 @@ public class ImageEnhaceActivity extends Activity {
         }
     };
 
+    // 이미지 흑백 변환
     private View.OnClickListener btnBWClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -138,6 +136,7 @@ public class ImageEnhaceActivity extends Activity {
         }
     };
 
+    // 이미지 밝기 증가
     private View.OnClickListener btnBrightnessclick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -151,6 +150,7 @@ public class ImageEnhaceActivity extends Activity {
         }
     };
 
+    // 왼쪽으로 90 회전
     private View.OnClickListener btnRoateLeftClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -164,6 +164,7 @@ public class ImageEnhaceActivity extends Activity {
         }
     };
 
+    // 오른쪽으로 90 회전
     private View.OnClickListener btnRoateRightClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -177,6 +178,7 @@ public class ImageEnhaceActivity extends Activity {
 
         }
     };
+
 
     private View.OnClickListener btnImageSaveClick = new View.OnClickListener() {
         @Override
@@ -235,6 +237,11 @@ public class ImageEnhaceActivity extends Activity {
             BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
             Bitmap bitmap = drawable.getBitmap();
 
+
+            /*
+                pdf 형식 문서 그리기
+                다수의 이미지도 가능 -> 추가 기능 사항
+             */
             PdfDocument document = new PdfDocument();
             PdfDocument.PageInfo pageinfo  = new PdfDocument.PageInfo.Builder(bitmap.getWidth(), bitmap.getHeight(), 1).create();
             PdfDocument.Page page = document.startPage(pageinfo);
@@ -318,7 +325,7 @@ public class ImageEnhaceActivity extends Activity {
         }
     }
 
-    // FIX HERE!
+    /*
 
     public Uri getUriFromPath(Context context, String filePath) {
         Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
@@ -329,7 +336,9 @@ public class ImageEnhaceActivity extends Activity {
         Uri uri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
 
         return uri;
-    }
 
+
+    }
+    */
 
 }

@@ -133,9 +133,9 @@ public class MainActivity extends Activity {
                BitmapFactory.Options options = new BitmapFactory.Options();
                options.inSampleSize = 2;
                Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-               bitmap = NativeClass.imgToBright(bitmap, 1, 100);
+               //bitmap = NativeClass.imgToBright(bitmap, 1, 100);  // 테스트 환경
                selectedBitmap = bitmap;
-               ImgConstants.selectedimgBitmap = selectedBitmap;
+               //ImgConstants.selectedimgBitmap = selectedBitmap;  // 테스트 환경
                imgView.setVisibility(View.VISIBLE);
                surfaceView.setVisibility(View.INVISIBLE);
                imgView.setImageBitmap(selectedBitmap);

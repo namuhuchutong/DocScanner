@@ -31,6 +31,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
 
+// 미사용
 public class CamActivity extends CameraActivity implements CvCameraViewListener2, OnTouchListener {
 
     private static final String TAG = "OpenCV_Camera::Activity";

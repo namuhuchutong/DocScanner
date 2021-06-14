@@ -11,6 +11,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.File;
 import java.util.ArrayList;
 
+/*
+    미사용 클래스
+ */
 
 public class listActivity extends ListActivity {
 
