@@ -34,6 +34,7 @@ import java.io.InputStream;
 public class MainActivity extends Activity {
 
     final int PERMISSIONS_REQUEST_CODE = 1;
+    final int PERMISSIONS_REQUEST_CAM = 2;
 
     Button btnOpenGallery;
     Button btnCapture;
@@ -48,7 +49,7 @@ public class MainActivity extends Activity {
     CameraSurfaceView surfaceView;
     Button btnCameraCapture;
 
-    static{
+    static {
         OpenCVLoader.initDebug();
     }
 
@@ -77,9 +78,9 @@ public class MainActivity extends Activity {
         this.btnCameraCapture.setOnClickListener(this.btnCameraCaptureClick);
     }
 
-    private View.OnClickListener btnOpenGalleryClick = new View.OnClickListener(){
+    private View.OnClickListener btnOpenGalleryClick = new View.OnClickListener() {
         @Override
-        public void onClick(View v){
+        public void onClick(View v) {
 
             /*
                 Reference : https://g-y-e-o-m.tistory.com/107
@@ -94,11 +95,11 @@ public class MainActivity extends Activity {
         }
     };
 
-    private View.OnClickListener btnCaptureClick = new View.OnClickListener(){
+    private View.OnClickListener btnCaptureClick = new View.OnClickListener() {
         @Override
-        public void onClick(View v){
+        public void onClick(View v) {
 
-            if(selectedBitmap == null)
+            if (selectedBitmap == null)
                 Toast.makeText(getApplicationContext(), "No Image!", Toast.LENGTH_SHORT).show();
             else {
                 ImgConstants.selectedimgBitmap = selectedBitmap;
@@ -109,9 +110,9 @@ public class MainActivity extends Activity {
         }
     };
 
-    private View.OnClickListener btnCameraClick = new View.OnClickListener(){
+    private View.OnClickListener btnCameraClick = new View.OnClickListener() {
         @Override
-        public void onClick(View v){
+        public void onClick(View v) {
 
 
             Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
@@ -119,28 +120,28 @@ public class MainActivity extends Activity {
         }
     };
 
-    private View.OnClickListener btnCameraCaptureClick = new View.OnClickListener(){
+    private View.OnClickListener btnCameraCaptureClick = new View.OnClickListener() {
         @Override
-        public void onClick(View v){
+        public void onClick(View v) {
             caputre();
         }
     };
 
-    public void caputre(){
-        surfaceView.capture(new Camera.PictureCallback(){
-           @Override
-           public void onPictureTaken(byte[] data, Camera camera){
-               BitmapFactory.Options options = new BitmapFactory.Options();
-               options.inSampleSize = 2;
-               Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-               //bitmap = NativeClass.imgToBright(bitmap, 1, 100);  // 테스트 환경
-               selectedBitmap = bitmap;
-               //ImgConstants.selectedimgBitmap = selectedBitmap;  // 테스트 환경
-               imgView.setVisibility(View.VISIBLE);
-               surfaceView.setVisibility(View.INVISIBLE);
-               imgView.setImageBitmap(selectedBitmap);
+    public void caputre() {
+        surfaceView.capture(new Camera.PictureCallback() {
+            @Override
+            public void onPictureTaken(byte[] data, Camera camera) {
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inSampleSize = 2;
+                Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                //bitmap = NativeClass.imgToBright(bitmap, 1, 100);  // 테스트 환경
+                selectedBitmap = bitmap;
+                //ImgConstants.selectedimgBitmap = selectedBitmap;  // 테스트 환경
+                imgView.setVisibility(View.VISIBLE);
+                surfaceView.setVisibility(View.INVISIBLE);
+                imgView.setImageBitmap(selectedBitmap);
 
-           }
+            }
         });
     }
 
@@ -162,8 +163,7 @@ public class MainActivity extends Activity {
         if (requestCode == ImgConstants.PICK_IMAGE && resultCode == RESULT_OK && data != null) {
             selectedImage = data.getData();
             this.loadImage();
-        }
-        else if(requestCode == ImgConstants.GET_IMAGE && resultCode == RESULT_OK && data != null){
+        } else if (requestCode == ImgConstants.GET_IMAGE && resultCode == RESULT_OK && data != null) {
             byte[] byteArray = data.getByteArrayExtra("CapturedImage");
             selectedBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
             imgView.setImageBitmap(selectedBitmap);
@@ -185,7 +185,18 @@ public class MainActivity extends Activity {
             //권한있을때.
             makeDir();
         }
+
+
+        boolean permission =
+                ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA);//사용자가 이전에 거절한적이 있어도 true 반환
+        if(permission ){//== PackageManager.PERMISSION_DENIED){
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA},PERMISSIONS_REQUEST_CAM);
+
+        }
+
     }
+
+
 
     /*
         퍼미션 요청 후 처리 영역
@@ -209,6 +220,18 @@ public class MainActivity extends Activity {
                     Toast.makeText(getApplicationContext(), "PERMISSION_DENIED", Toast.LENGTH_SHORT).show();
                 }
             }
+
+            case PERMISSIONS_REQUEST_CAM:
+            {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            }   else{
+                    denialDialog();
+                    Toast.makeText(getApplicationContext(), "PERMISSION_DENIED", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            }
+
         }
     }
     /*
@@ -217,7 +240,7 @@ public class MainActivity extends Activity {
     public void denialDialog() {
         new AlertDialog.Builder(this)
                 .setTitle("알림")
-                .setMessage("저장소 권한이 필요합니다. 환경 설정에서 저장소 권한을 허가해주세요.")
+                .setMessage("권한이 필요합니다. 환경 설정에서 저장소 권한을 허가해주세요.")
                 .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
